@@ -112,7 +112,8 @@
 (defun paperless-file ()
   "Select the directory in which to file the current document."
   (interactive)
-  (let ((new-dir (ido-completing-read "File destination: " (paperless--dirtree)))
+  (let ((new-dir (completing-read "File destination: "
+				  (paperless--dirtree) nil 'confirm))
 	(vctr (cadr (assoc (tabulated-list-get-id) paperless--table-contents))))
     (setf (elt vctr 2) new-dir))
   (tabulated-list-print t))
@@ -149,7 +150,7 @@
 	      (if (= (length (elt vctr 2)) 0)
 		  nil
 		(progn
-		  (if (string-equal (elt vctr 2) "[ TRASH ]")
+		  (if (string-equal (elt vctr 2) "[ DELETE ]")
 		      (move-file-to-trash (car i))
 		    (rename-file (car i) (concat (elt vctr 2) "/" (elt vctr 1))))
 		  (car i)))))
